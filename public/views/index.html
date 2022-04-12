@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../stylesheets/style.css" />
+
+    <title>Todoアプリ</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Content here -->
+      <h2>タスク一覧イメージ</h2>
+      <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add">
+        <b>＋タスクを追加</b>
+      </button>
+      <div class="list-group">
+        <div class="row">
+          <span class="col-sm-10">
+            <li class="list-group-item" display="space-between">
+              <div class="row">
+                <div class="col-sm-10">タスク1が入る</div><div class="col-sm-2" >2222年22月22日</div>
+              </div>
+            </li>
+          </span>
+          <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+            <button type="button" class="btn btn-danger">削除</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-10" class="border-left-0">
+            <li class="list-group-item" display="space-between">
+              <div class="row">
+                <div class="col-sm-10">タスク2が入る</div><div class="col-sm-2" >2222年22月22日</div>
+              </div>
+            </li>
+          </div>
+          <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+            <button type="button" class="btn btn-danger">削除</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <li class="list-group-item" display="space-between">
+                <span class="input-group-text" id="basic-addon1">カテゴリ名</span>
+                <div class="row">
+                  <div class="col-sm-9">タスク3が入る</div><div class="col-sm-3" >2222年22月22日</div>
+                </div>
+              </li>
+            </div>
+            <!-- <div  aria-describedby="basic-addon1">タスク3が入る</div><div></div>2222年22月22日</div> -->
+          </div>
+          <!-- <div class="col-sm-2" class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">カテゴリ名</span>
+            <div class="col-sm-2" background-color="red">カテゴリ名</div>
+          </div>
+          <div class="col-sm-8"><li class="list-group-item" display="space-between">
+            <div class="row">
+              <div class="col-sm-9">タスク3が入る</div><div class="col-sm-3" >2222年22月22日</div>
+            </div>
+          </li></div> -->
+          <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+            <button type="button" class="btn btn-danger">削除</button>
+          </div>
+        </div>
+      </div>
+      
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">タスク登録</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <from>
+              <div class="form-group">
+                <label>タスク名</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>期限</label>
+                <input type="text" class="form-control" class="date" value="カレンダー選択できるようにする">
+              </div>
+              <div class="form-group">
+                <label>カテゴリ</label>
+                <select name="category" class="form-control">
+                  <option>趣味</option>
+                  <option>仕事</option>
+                  <option>公的</option>
+                  <option>※自分でカテゴリ追加できたらいいな※</option>
+                </select>
+              </div>
+            </from>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">タスク更新</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <from>
+              <div class="form-group">
+                <label>タスク名</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>期限</label>
+                <input type="text" class="form-control" value="カレンダー選択できるようにする">
+              </div>
+              <div class="form-group">
+                <label>カテゴリ</label>
+                <select name="category" class="form-control">
+                  <option>趣味</option>
+                  <option>仕事</option>
+                  <option>公的</option>
+                  <option>※自分でカテゴリ追加できたらいいな※</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>ステータス</label>
+                <select name="category" class="form-control">
+                  <option>進行中</option>
+                  <option>完了！</option>
+                  <option>未完</option>
+                  <option>※自分でカテゴリ追加できたらいいな※</option>
+                </select>
+              </div>
+            </from>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+      $('.date').datapicker({
+        format: 'yyyy/mm/dd',
+        language:'ja'
+      })
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
