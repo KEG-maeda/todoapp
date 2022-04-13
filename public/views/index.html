@@ -26,25 +26,53 @@
       <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add">
         <b>＋タスクを追加</b>
       </button>
-      <div class="list-group">
-        <div class="row">
-          <span class="col-sm-10">
+      <ul class="list-group">
+        <li class="list-group-item category green"> <!--class list-group-item category-orange-->
+          <div class="row align-items-center">
+            <span class="col-sm-8">タスク1が入る　緑は生活</span><span class="col-sm-2" >2222年22月22日</span>  
+            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+              <button type="button" class="btn btn-danger">削除</button>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item category orange"> <!--class list-group-item category-orange-->
+          <div class="row align-items-center">
+            <span class="col-sm-8">タスク2が入る　オレンジは勉強</span><span class="col-sm-2" >2222年22月22日</span>  
+            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+              <button type="button" class="btn btn-danger">削除</button>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item category blue"> <!--class list-group-item category-orange-->
+          <div class="row align-items-center">
+            <span class="col-sm-8">タスク3が入る　青は仕事</span><span class="col-sm-2" >2222年22月22日</span>  
+            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+              <button type="button" class="btn btn-danger">削除</button>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item category pink deadline"> <!--class list-group-item category-orange-->
+          <div class="row align-items-center">
+            <span class="col-sm-8">タスク4が入る　ピンクは趣味</span><span class="col-sm-2" >2222年22月22日</span>  
+            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
+              <button type="button" class="btn btn-danger">削除</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+        <!-- <div class="row">
+          <div class="col-sm-1">
+            <li class="list-group-item" display="space-between">
+              @
+          </div>
+          <div class="col-sm-9">
             <li class="list-group-item" display="space-between">
               <div class="row">
-                <div class="col-sm-10">タスク1が入る</div><div class="col-sm-2" >2222年22月22日</div>
-              </div>
-            </li>
-          </span>
-          <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-            <button type="button" class="btn btn-danger">削除</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-10" class="border-left-0">
-            <li class="list-group-item" display="space-between">
-              <div class="row">
-                <div class="col-sm-10">タスク2が入る</div><div class="col-sm-2" >2222年22月22日</div>
+                <div class="col-sm-10">タスク3が入る</div><div class="col-sm-2" >2222年22月22日</div>
               </div>
             </li>
           </div>
@@ -52,33 +80,7 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
             <button type="button" class="btn btn-danger">削除</button>
           </div>
-        </div>
-        <div class="row">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <li class="list-group-item" display="space-between">
-                <span class="input-group-text" id="basic-addon1">カテゴリ名</span>
-                <div class="row">
-                  <div class="col-sm-9">タスク3が入る</div><div class="col-sm-3" >2222年22月22日</div>
-                </div>
-              </li>
-            </div>
-            <!-- <div  aria-describedby="basic-addon1">タスク3が入る</div><div></div>2222年22月22日</div> -->
-          </div>
-          <!-- <div class="col-sm-2" class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">カテゴリ名</span>
-            <div class="col-sm-2" background-color="red">カテゴリ名</div>
-          </div>
-          <div class="col-sm-8"><li class="list-group-item" display="space-between">
-            <div class="row">
-              <div class="col-sm-9">タスク3が入る</div><div class="col-sm-3" >2222年22月22日</div>
-            </div>
-          </li></div> -->
-          <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-            <button type="button" class="btn btn-danger">削除</button>
-          </div>
-        </div>
+        </div> -->
       </div>
       
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,26 +96,27 @@
             <from>
               <div class="form-group">
                 <label>タスク名</label>
-                <input type="text" class="form-control">
+                <input type="text" name="task" class="form-control">
               </div>
               <div class="form-group">
                 <label>期限</label>
-                <input type="text" class="form-control" class="date" value="カレンダー選択できるようにする">
+                <input type="date" name="deadline" class="form-control" class="date">
               </div>
               <div class="form-group">
                 <label>カテゴリ</label>
                 <select name="category" class="form-control">
-                  <option>趣味</option>
-                  <option>仕事</option>
-                  <option>公的</option>
-                  <option>※自分でカテゴリ追加できたらいいな※</option>
+                  <option value="1">生活</option>
+                  <option value="2">勉強</option>
+                  <option value="3">仕事</option>
+                  <option value="4">趣味</option>
+                  <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
                 </select>
               </div>
             </from>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-            <button type="button" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-primary" id="create-task">保存</button>
           </div>
         </div>
       </div>
@@ -166,12 +169,6 @@
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script>
-      $('.date').datapicker({
-        format: 'yyyy/mm/dd',
-        language:'ja'
-      })
-    </script>
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -187,5 +184,28 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+
+    <!-- ｊQuery特有の$はjQuery導入スクリプトより後ろに書くこと -->
+    <script src="../javascripts/index.js"></script>
+    <script>
+      // $('.date').datepicker({
+      //   language:'ja',
+      //   format:'yyyy年mm月dd日'
+      // })
+    </script>
+    <script>
+      $('#create-task').on("click", async function () {
+        const data = {
+          taskName: $("[name=task]").val(),
+          deadline: $("[name=deadline]").val(),
+          category: $("[name=category]").val(),
+        };
+        const response = await httpPost(//httpPostはjavascript/index.jsに有り
+          "//" + window.location.host + "/api/tasks",
+          data
+        );
+        console.log(response);
+      });
+    </script>
   </body>
 </html>
