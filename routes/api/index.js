@@ -8,7 +8,7 @@ var router = express.Router();
 router.post("/tasks", async function (req, res, next) {//こいつが動いてない？console.log(req.body)が出力されてないし
                                                       // asyncが抜けてました！！！！！
   console.log(req.body);//javascripts/index.jsのJSON.stringify(data)
-  const createTask = create.postCreateTasks(req.body);
+  const createTask = create.postTasks(req.body);
   res.send(createTask);
 });
 

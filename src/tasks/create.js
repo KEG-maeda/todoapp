@@ -9,7 +9,7 @@ const config = require("../../config.js");// <-　[config.js]
  * @returns レスポンス JSON
  */
 
-postCreateTasks = async function (body) {
+postTasks = async function (body) {
     let connection = null;//この中にデータベースと接続できているかのしるしを入れる。お守り定型文
     try {
         connection = await mysql.createConnection(config.dbSetting);//config.jsにあるdbSettingオブジェクトを入れる
@@ -26,4 +26,4 @@ postCreateTasks = async function (body) {
     }
 };
 
-exports.postCreateTasks = postCreateTasks;
+exports.postTasks = postTasks;
