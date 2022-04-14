@@ -1,6 +1,7 @@
 var express = require("express");
-// const items = require("../../src/items");
 const create = require("../../src/tasks/create.js");
+const list = require("../../src/tasks/list.js");
+const get = require("../../src/tasks/get.js");
 
 var router = express.Router();
 
@@ -12,10 +13,16 @@ router.post("/tasks", async function (req, res, next) {//こいつが動いて�
   res.send(createTask);
 });
 
+// タスク一覧ルーティング
+router.get("/tasks", async function (req, res, next) {
+  const listTask = await list.listTasks();
+  res.send(JSON.stringify(listTask));
+});
+
 /*１件の商品情報を取得するルーティング */
-// router.get("/items/:id", function (req, res, next) {
-//   const item = items.getItem(req.params.id);
-//   res.send(item);
-// });
+router.get("/tasks/id", async function (req, res, next) {
+  const getTask = await get.getTasks(req.body);
+  res.send(JSON.stringify(getTask));
+});
 
 module.exports = router;

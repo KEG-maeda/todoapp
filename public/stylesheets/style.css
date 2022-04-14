@@ -18,25 +18,25 @@ li {
   /* border: 20px; この書き方だとsolidなども指定する必要がある→bootstrapのデザインが台無しに*/
 }
 
-.green {
+.c1 {
   border-left-color: green;
   /* 生活 */
 }
 
-.orange {
+.c2 {
   border-left-color: orange;
   /* 勉強 */
 }
-.blue {
+.c3 {
   border-left-color: blue;
   /* 仕事 */
 }
-.pink {
+.c4 {
   border-left-color: pink;
   /* 趣味 */
 }
 
-.deadline {
+li.deadline {
   border-top: dotted red;
   border-right: dotted red;
   border-bottom: dotted red;
