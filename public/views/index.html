@@ -21,6 +21,11 @@
   </head>
   <body>
     <div class="container">
+      <!-- <form>
+        <input type="text" id="debug-task">
+      </form> -->
+      <div id="debug-delete" data-delete="リセットするなや～！！！">タスクを削除</div>
+      <button type="button" class="btn btn-danger" id="delete-test">消したるわ</button>
       <!-- Content here -->
       <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add">
         <b>＋タスクを追加</b>
@@ -58,13 +63,26 @@
             <span class="col-sm-8 task">タスク4が入る　ピンクは趣味</span><span class="col-sm-2" >2222年 22月 22日</span>  
             <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-              <button type="button" class="btn btn-danger">削除</button>
+              <button type="button" class="btn btn-warning warning" data-toggle="collapse" data-target="#deleteTest" aria-expanded="false" aria-controls="collapse">削除</button>
+              </div>
+            </div>
+          </li>
+          <!-- 動作テスト用コラプス -->
+          <div class="collapse" id="deleteTest">
+            <div class="card card-body">
+              <div class="row">
+                <div class="col-sm-9"><b>このタスクを削除しますか？</b></div>
+                <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-3">
+                  <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
+                  <button type="button" class="btn btn-danger">削除</button>
+                </div>
+              </div> 
             </div>
           </div>
-        </li>
       </ul>
     </div>
       
+    <!-- タスク追加モーダル -->
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -98,11 +116,13 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-            <button type="button" class="btn btn-primary" id="create-task" onclick="window.location.reload();">保存</button>
+            <button type="button" class="btn btn-primary" id="create-task">追加</button>
           </div>
         </div>
       </div>
     </div>
+    <!-- タスク追加モーダル ～完～-->
+    <!-- タスク更新モーダル -->
     <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -113,18 +133,18 @@
             </button>
           </div>
           <div class="modal-body">
-            <from>
+            <from name="update-id" value="">
               <div class="form-group">
                 <label>タスク名</label>
-                <input type="text" name="task" class="form-control" id="update-task">
+                <input type="text" name="update-task" class="form-control">
               </div>
               <div class="form-group">
                 <label>期限</label>
-                <input type="date" name="deadline" class="form-control date">
+                <input type="date" name="update-deadline" class="form-control date">
               </div>
               <div class="form-group">
                 <label>カテゴリ</label>
-                <select name="category" class="form-control">
+                <select name="update-category" class="form-control">
                   <option value="1">生活</option>
                   <option value="2">勉強</option>
                   <option value="3">仕事</option>
@@ -134,7 +154,7 @@
               </div>
               <div class="form-group">
                 <label>ステータス</label>
-                <select name="status" class="form-control">
+                <select name="update-status" class="form-control">
                   <option value="1">完了</option>
                   <option value="2">作業中</option>
                   <option value="3">未実装</option>
@@ -145,11 +165,13 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-            <button type="button" class="btn btn-primary" id="update-task">保存</button>
+            <button type="button" class="btn btn-primary" id="update-task">更新</button>
           </div>
         </div>
       </div>
     </div>
+    <!-- タスク更新モーダル ～完～-->
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -171,25 +193,41 @@
     <!-- ｊQuery特有の$はjQuery導入スクリプトより後ろに書くこと -->
     <script src="../javascripts/index.js"></script>
     <script>
+      // $("#delete-test").on("click",function () {
+      //   const task = $(this).data("delete");
+      //   console.log(task);
+      //   $("#debug-delete").html(`下記の内容を削除します。\n ${task}`);
+      // });
+
       // 取得メソッド
       $(async function () {
         const data = await httpGet(
           "//" + window.location.host + "/api/tasks");
+
         const list = data.map((item) => {
           const d = new Date(item.deadline);//timestanp->date
           const year = d.getFullYear();
-          const month = d.getMonth();
-          const day = d.getDay();
+          const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
+          const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
+          
           return `
           <li class="list-group-item category c${item.category_id}" name="id${item.id}">
-          <div class="row align-items-center">
-            <span class="col-sm-8 task">${item.task_name}</span><span class="col-sm-2 deadline">${year}年 ${month}月 ${day}日</span>  
-            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-              <button type="button" class="btn btn-primary update" data-toggle="modal" data-target="#update" value=${item.id}>更新</button>
-              <button type="button" class="btn btn-danger">削除</button>
+            <div class="row align-items-center">
+              <span class="col-sm-8 task">${item.task_name}</span><span class="col-sm-2 deadline">${year}年${month}月${date}日</span>  
+              <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
+                <button type="button" class="btn btn-primary update" data-toggle="modal" data-target="#update" value=${item.id}>更新</button>
+                <button type="button" class="btn btn-warning warning" data-toggle="collapse" data-target="#delete${item.id}" aria-expanded="false" aria-controls="multi-collapse" value=${item.id}>削除</button>
+              </div>
             </div>
-          </div>
-        </li>`;
+          </li>
+          <div class="collapse multi-collapse collapse-red" data-parent="#list-group" id="delete${item.id}">
+            <div class="card card-body">
+              <div class="row">
+                <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
+                <button type="button" class="btn btn-danger col-sm-1 delete" value="${item.id}">削除</button>
+              </div> 
+            </div>
+          </div>`;
         })
         $('ul#list-group').append(list);
       });
@@ -201,36 +239,97 @@
           deadline: $("[name=deadline]").val(),
           category: $("[name=category]").val(),
         };
+
         const response = await httpPost(//httpPostはjavascript/index.jsに有り
           "//" + window.location.host + "/api/tasks",
           data
         );
-        console.log(response);
+
+        window.location.reload();
       });
 
       // 更新メソッド
       // DBから1件だけ情報取得
       $(document).on("click", ".update" , async function () {
-        const i = $(this).val();
-        // const data = {
-        //   id: $(this).val()
-        // };
+        const update_id = $(this).val();
+
         const response = await httpGet(
-          "//" + window.location.host + "/api/tasks/id",
-          // data
-        );
-        console.log(response);
+          "//" + window.location.host + "/api/tasks/id",);
+
         response.forEach(item => {
-          console.log(item.task_name)
-          if(item.id == i){
-            $(document).val("#update-task", item.task_name);
+          if(item.id == update_id){
+
+            const d = new Date(item.deadline);//timestanp->date
+            const year = d.getFullYear();
+            const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
+            const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
+            
+            $("[name=update-id]").val(update_id);
+            $("[name=update-task]").val(item.task_name);
+            $("[name=update-deadline]").val(year + "-" + month + "-" + date);
+            $("[name=update-category]").val(item.category_id);
+            $("[name=update-status]").val(item.task_status);
           }
         })
-        // $(document).val("#update.task", response.task_name);
-        // $("#update.name").val(response.task_name);
-        // $("#update.deadline").val(response.deadline);
-        // $("#update.category").val(response.category_id);
-        // $("#update.status").val(response.task_status);
+      });
+
+        // DBを更新
+      $('#update-task').on("click", async function () {
+        const data = {
+          id: $("[name=update-id]").val(),
+          taskName: $("[name=update-task]").val(),
+          deadline: $("[name=update-deadline]").val(),
+          category: $("[name=update-category]").val(),//これだと新規タスクのフォームの値を参照することになる
+          status: $("[name=update-status]").val()
+        };
+
+        const response = await httpUpdate(//httpPostはjavascript/index.jsに有り
+          "//" + window.location.host + "/api/tasks",
+          data
+        );
+
+        window.location.reload();
+      });
+
+      // 削除メソッド
+      $(document).on('click', ".warning", async function() {
+        if($(this).text() == "削除"){
+          $('multi-collapse').collapse('hide');// 自分以外のコラプスを閉じる
+          $('.warning').text('削除');// 他のキャンセルボタンを削除ボタンに直す
+          $(`#delete${$(this).val()}`).collapse('show');// コラプスを開く
+          $(this).text("キャンセル");
+
+        } else if($(this).text() == "キャンセル"){// キャンセルボタン押したら削除に直す
+          $(this).text('削除');
+        }
+      });
+      //   // キャンセルボタン押したら削除に直す
+      //   console.log($(this).text())
+      //   if($(this).text() == "キャンセル"){
+      //     console.log("ok")
+      //     $(this).text('削除');
+      //   }
+      //   // 自分以外のコラプスを閉じる
+      //   $('multi-collapse').collapse('hide');
+      //   // 他のキャンセルボタンを削除ボタンに直す
+      //   $('.warning').text('削除');
+      //   // トグルを開く
+      //   $(`#delete${$(this).val()}`).collapse('show');
+      //   $(this).text("キャンセル");
+      // });
+
+      // 削除
+      $(document).on('click', '.delete', async function(){
+        const data = {
+          id: $(this).val()
+        }
+
+        const response = await httpDelete(//httpPostはjavascript/index.jsに有り
+          "//" + window.location.host + "/api/tasks",
+          data
+        );
+
+        window.location.reload();
       });
     </script>
   </body>
