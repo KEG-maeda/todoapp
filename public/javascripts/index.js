@@ -12,8 +12,6 @@ const httpGet = async function (url) {
 
 // 登録用API実行メソッド
 const httpPost = async function (url, data) {
-  console.log(url);
-  console.log(data);
   try {
     const response = await fetch(url, {
       method: "POST", // POST
@@ -45,10 +43,14 @@ const httpUpdate = async function (url, data) {
 };
 
 // 削除用API実行メソッド
-const httpDelete = async function (url) {
+const httpDelete = async function (url, data) {
   try {
     const response = await fetch(url, {
       method: "DELETE", // DELETE
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
     return response.json(); // JSON のレスポンスを JavaScript のオブジェクトに変換
   } catch (err) {
