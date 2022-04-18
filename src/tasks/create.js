@@ -11,7 +11,7 @@ const config = require("../../config.js");// <-　[config.js]
 
 postTasks = async function (body) {
     let connection = null;//この中にデータベースと接続できているかのしるしを入れる。お守り定型文
-    try {
+    try {console.log(body.category);
         connection = await mysql.createConnection(config.dbSetting);//config.jsにあるdbSettingオブジェクトを入れる
                                    //↑↑これでDBに接続する。これもお決まりお守り。mysql.createConnectionの仕様は調べて
         const sql = "INSERT INTO `todoapp`.`t_task` (`task_name`, `deadline`, `category_id`) VALUES(?, ?, ?);";
