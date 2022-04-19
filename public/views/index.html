@@ -21,26 +21,24 @@
   </head>
   <body>
     <div class="container">
-      <!-- <form>
-        <input type="text" id="debug-task">
-      </form> -->
-      <div id="debug-delete" data-delete="リセットするなや～！！！">タスクを削除</div>
-      <button type="button" class="btn btn-danger" id="delete-test">消したるわ</button>
       <!-- Content here -->
       <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add">
         <b>＋タスクを追加</b>
       </button>
       <ul id="list-group" class="list-group">
-        <li class="list-group-item category c1"> <!--class list-group-item category-orange-->
-          <div class="row align-items-center">
-            <span class="col-sm-8">タスク1が入る　緑は生活</span><span class="col-sm-2" >2222年 22月 22日</span>  
+
+<!--デザインテスト用HTML-->
+<!-- <div name="fake">
+          <li class="list-group-item category c1"> 
+            <div class="row align-items-center">
+              <span class="col-sm-8">タスク1が入る　緑は生活</span><span class="col-sm-2" >2222年 22月 22日</span>  
             <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
               <button type="button" class="btn btn-primary update" data-toggle="modal" data-target="#update">更新</button>
               <button type="button" class="btn btn-danger">削除</button>
             </div>
           </div>
         </li>
-        <li class="list-group-item category c2"> <!--class list-group-item category-orange-->
+        <li class="list-group-item category c2">
           <div class="row align-items-center">
             <span class="col-sm-8">タスク2が入る　オレンジは勉強</span><span class="col-sm-2" >2222年 22月 22日</span>  
             <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
@@ -49,7 +47,7 @@
             </div>
           </div>
         </li>
-        <li class="list-group-item category c3"> <!--class list-group-item category-orange-->
+        <li class="list-group-item category c3">
           <div class="row align-items-center">
             <span class="col-sm-8">タスク3が入る　青は仕事</span><span class="col-sm-2" >2222年 22月 22日</span>  
             <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
@@ -58,29 +56,28 @@
             </div>
           </div>
         </li>
-        <li class="list-group-item category c4 deadline" value="bye"> <!--class list-group-item category-orange-->
+        <li class="list-group-item category c4 deadline" value="bye">
           <div class="row align-items-center">
             <span class="col-sm-8 task">タスク4が入る　ピンクは趣味</span><span class="col-sm-2" >2222年 22月 22日</span>  
             <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
               <button type="button" class="btn btn-warning warning" data-toggle="collapse" data-target="#deleteTest" aria-expanded="false" aria-controls="collapse">削除</button>
-              </div>
             </div>
-          </li>
-          <!-- 動作テスト用コラプス -->
-          <div class="collapse" id="deleteTest">
-            <div class="card card-body">
-              <div class="row">
-                <div class="col-sm-9"><b>このタスクを削除しますか？</b></div>
-                <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-3">
-                  <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-                  <button type="button" class="btn btn-danger">削除</button>
-                </div>
+          </div>
+        </li>
+        
+        <div class="collapse" id="deleteTest">
+          <div class="card card-body">
+            <div class="row">
+                <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
+                <button type="button" class="btn btn-danger col-sm-1">削除</button>
               </div> 
             </div>
           </div>
-      </ul>
-    </div>
+</div>   -->
+<!--デザインテスト用HTML ～完～-->
+        </ul>
+      </div>
       
     <!-- タスク追加モーダル -->
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -134,6 +131,7 @@
           </div>
           <div class="modal-body">
             <from name="update-id" value="">
+              <!-- <input name="id" type="hidden">  id格納のための見えないinputを与えてあげればAPI接続の時の書き方が統一できる-->
               <div class="form-group">
                 <label>タスク名</label>
                 <input type="text" name="update-task" class="form-control">
@@ -193,12 +191,6 @@
     <!-- ｊQuery特有の$はjQuery導入スクリプトより後ろに書くこと -->
     <script src="../javascripts/index.js"></script>
     <script>
-      // $("#delete-test").on("click",function () {
-      //   const task = $(this).data("delete");
-      //   console.log(task);
-      //   $("#debug-delete").html(`下記の内容を削除します。\n ${task}`);
-      // });
-
       // 取得メソッド
       $(async function () {
         const data = await httpGet(
@@ -215,14 +207,26 @@
             <div class="row align-items-center">
               <span class="col-sm-8 task">${item.task_name}</span><span class="col-sm-2 deadline">${year}年${month}月${date}日</span>  
               <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-                <button type="button" class="btn btn-primary update" data-toggle="modal" data-target="#update" value=${item.id}>更新</button>
-                <button type="button" class="btn btn-warning warning" data-toggle="collapse" data-target="#delete${item.id}" aria-expanded="false" aria-controls="multi-collapse" value=${item.id}>削除</button>
+                <button
+                 type="button" 
+                 class="btn btn-primary update" 
+                 data-toggle="modal" 
+                 data-target="#update" 
+                 value=${item.id}>更新</button>
+                <button
+                 type="button" 
+                 class="btn btn-warning warning" 
+                 data-toggle="collapse" 
+                 data-target="#delete${item.id}" 
+                 aria-expanded="false" 
+                 aria-controls="multi-collapse" 
+                 value=${item.id}>削除</button>
               </div>
             </div>
           </li>
-          <div class="collapse multi-collapse collapse-red" data-parent="#list-group" id="delete${item.id}">
+          <div class="collapse multi-collapse back-red" data-parent="#list-group" id="delete${item.id}">
             <div class="card card-body">
-              <div class="row">
+              <div class="row align-items-center back-red">
                 <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
                 <button type="button" class="btn btn-danger col-sm-1 delete" value="${item.id}">削除</button>
               </div> 
@@ -235,11 +239,10 @@
       // 登録メソッド
       $('#create-task').on("click", async function () {
         const data = {
-          taskName: $("[name=task]").val(),
-          deadline: $("[name=deadline]").val(),
-          category: $("[name=category]").val(),
+          taskName: $("#add input[name=task]").val(),
+          deadline: $("#add input[name=deadline]").val(),
+          category: $("#add select[name=category]").val(),
         };
-
         const response = await httpPost(//httpPostはjavascript/index.jsに有り
           "//" + window.location.host + "/api/tasks",
           data
@@ -254,37 +257,38 @@
         const update_id = $(this).val();
 
         const response = await httpGet(
-          "//" + window.location.host + "/api/tasks/id",);
+          "//" + window.location.host + `/api/tasks/${update_id}`
+          );
+        // response.forEach(item => {
+        // if(item.id == update_id){ 
 
-        response.forEach(item => {
-          if(item.id == update_id){
-
-            const d = new Date(item.deadline);//timestanp->date
-            const year = d.getFullYear();
-            const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
-            const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
-            
-            $("[name=update-id]").val(update_id);
-            $("[name=update-task]").val(item.task_name);
-            $("[name=update-deadline]").val(year + "-" + month + "-" + date);
-            $("[name=update-category]").val(item.category_id);
-            $("[name=update-status]").val(item.task_status);
-          }
-        })
+          const d = new Date(response[0].deadline);//timestanp->date
+          const year = d.getFullYear();
+          const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
+          const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
+          const deadlineVal = `${year}-${month}-${date}`;
+          
+          $("#update [name=update-id]").val(response[0].id);//パラメータを使えば、responseには常に押されたタスクの情報のみ入る
+          $("#update input[name=update-task]").val(response[0].task_name);//ただし取り出すには配列数の指定が必要
+          $("#update input[name=update-deadline]").val(deadlineVal);//配列数がないと、どの配列のを取り出すのかが不明確だから？本来配列は複数あるのを想定してるし
+          $("#update select[name=update-category]").val(response[0].category_id);
+          $("#update select[name=update-status]").val(response[0].task_status);
+        // }
+      // })
       });
 
         // DBを更新
       $('#update-task').on("click", async function () {
         const data = {
-          id: $("[name=update-id]").val(),
-          taskName: $("[name=update-task]").val(),
-          deadline: $("[name=update-deadline]").val(),
-          category: $("[name=update-category]").val(),//これだと新規タスクのフォームの値を参照することになる
-          status: $("[name=update-status]").val()
+          id:       $("#update [name=update-id]").val(),
+          taskName: $("#update input[name=update-task]").val(),
+          deadline: $("#update input[name=update-deadline]").val(),
+          category: $("#update select[name=update-category]").val(),//これだと新規タスクのフォームの値を参照することになる
+          status:   $("#update select[name=update-status]").val()
         };
 
         const response = await httpUpdate(//httpPostはjavascript/index.jsに有り
-          "//" + window.location.host + "/api/tasks",
+          "//" + window.location.host + `/api/tasks/${data.id}`,
           data
         );
 
@@ -320,13 +324,10 @@
 
       // 削除
       $(document).on('click', '.delete', async function(){
-        const data = {
-          id: $(this).val()
-        }
+        const id = $(this).val();
 
         const response = await httpDelete(//httpPostはjavascript/index.jsに有り
-          "//" + window.location.host + "/api/tasks",
-          data
+          "//" + window.location.host + `/api/tasks/${id}`
         );
 
         window.location.reload();

@@ -22,21 +22,20 @@ router.get("/tasks", async function (req, res, next) {
 });
 
 /*１件の情報を取得するルーティング */
-router.get("/tasks/id", async function (req, res, next) {
-  const getTask = await get.getTasks(req.body);
+router.get("/tasks/:id", async function (req, res, next) {//「:id」はidという名前のパラメーター 。「:_id」なら_idという名前のパラメーターになる
+  const getTask = await get.getTasks(req.params.id);//「params.id」はidという名前のパラメーターを引っ張るという意味。params.id(:id)にはupdate_idが入っている
   res.send(JSON.stringify(getTask));
 });
 
 // タスク更新ルーティング
-router.patch("/tasks", async function (req, res, next) {
-  const updateTask = await update.updateTasks(req.body);
+router.patch("/tasks/:id", async function (req, res, next) {
+  const updateTask = await update.updateTasks(req.params.id, req.body);
   res.send(JSON.stringify(updateTask));
 });
 
 // タスク削除ルーティング
-router.delete("/tasks", async function (req, res, next) {
-  console.log("hello delete")
-  const deleteTask = await del.deleteTasks(req.body);
+router.delete("/tasks/:id", async function (req, res, next) {
+  const deleteTask = await del.deleteTasks(req.params.id);
   res.send(JSON.stringify(deleteTask));
 });
 

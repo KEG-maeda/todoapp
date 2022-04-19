@@ -43,14 +43,10 @@ const httpUpdate = async function (url, data) {
 };
 
 // 削除用API実行メソッド
-const httpDelete = async function (url, data) {
+const httpDelete = async function (url) {
   try {
     const response = await fetch(url, {
       method: "DELETE", // DELETE
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
     });
     return response.json(); // JSON のレスポンスを JavaScript のオブジェクトに変換
   } catch (err) {
