@@ -18,6 +18,9 @@ li {
   /* border: 20px; この書き方だとsolidなども指定する必要がある→bootstrapのデザインが台無しに*/
 }
 
+.category.add {
+  border-color: #28a745
+}
 .c1 {
   border-left-color: green;
   /* 生活 */
@@ -45,4 +48,5 @@ li.deadline {
 .back-red {
   background-color: rgb(233, 150, 150);
 }
+
 /* .row * */
