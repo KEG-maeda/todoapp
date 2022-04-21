@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: aliceblue;
 }
 
 a {
@@ -18,7 +19,12 @@ li {
   /* border: 20px; この書き方だとsolidなども指定する必要がある→bootstrapのデザインが台無しに*/
 }
 
-.category.add {
+#add {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.category#add {
   border-color: #28a745
 }
 .c1 {
@@ -38,15 +44,19 @@ li {
   border-left-color: pink;
   /* 趣味 */
 }
+/* カテゴリーごとに色分け　～完～ */
 
 li.deadline {
   border-top: dotted red;
   border-right: dotted red;
   border-bottom: dotted red;
 }
-
+/* 期限間近 */
 .back-red {
   background-color: rgb(233, 150, 150);
 }
 
-/* .row * */
+#re-add {
+  position:absolute;
+  bottom: 4px;
+}

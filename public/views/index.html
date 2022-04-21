@@ -22,117 +22,28 @@
   <body>
     <div class="container">
       <!-- Content here -->
-      <li class="list-group-item category add">
-        <from class="form-horizontal">
-          <div class="form-row align-items-bottom">
-            <div class="col-sm-3">
-              <label>タスク名</label>
-              <input type="text" name="task" class="form-control">
-            </div>
-            <div class="col-sm-3">
-              <label>期限</label>
-              <input type="date" name="deadline" class="form-control date">
-            </div>
-            <div class="col-sm-3">
-              <label>カテゴリ</label>
-              <select name="category" class="form-control">
-                <option value="1">生活</option>
-                <option value="2">勉強</option>
-                <option value="3">仕事</option>
-                <option value="4">趣味</option>
-                <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
-              </select>
-            </div>
-            <div class="btn-group col-sm-2 offset-sm-1" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#add" id="add-test">
-                <b>タスクを追加</b>
-              </button>
-            </div>
-          </div>
-        </from>
-      </li>
-      <div class="collapse multi-collapse back-red" data-parent="#list-group" id="delete${item.id}">
-        <div class="card card-body">
-          <div class="row align-items-center back-red">
-            <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
-            <button type="button" class="btn btn-danger col-sm-1 delete" value="${item.id}">削除</button>
-          </div> 
-        </div>
-      </div>
       <ul id="list-group" class="list-group">
-<!--デザインテスト用HTML-->
-<!-- <div name="fake">
-          <li class="list-group-item category c1"> 
-            <div class="row align-items-center">
-              <span class="col-sm-8">タスク1が入る　緑は生活</span><span class="col-sm-2" >2222年 22月 22日</span>  
-            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-              <button type="button" class="btn btn-primary update" data-toggle="modal" data-target="#update">更新</button>
-              <button type="button" class="btn btn-danger">削除</button>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item category c2">
-          <div class="row align-items-center">
-            <span class="col-sm-8">タスク2が入る　オレンジは勉強</span><span class="col-sm-2" >2222年 22月 22日</span>  
-            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-              <button type="button" class="btn btn-danger">削除</button>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item category c3">
-          <div class="row align-items-center">
-            <span class="col-sm-8">タスク3が入る　青は仕事</span><span class="col-sm-2" >2222年 22月 22日</span>  
-            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-              <button type="button" class="btn btn-danger">削除</button>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item category c4 deadline" value="bye">
-          <div class="row align-items-center">
-            <span class="col-sm-8 task">タスク4が入る　ピンクは趣味</span><span class="col-sm-2" >2222年 22月 22日</span>  
-            <div class="btn-group" role="group" aria-label="Basic example" class="col-sm-2">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update">更新</button>
-              <button type="button" class="btn btn-warning warning" data-toggle="collapse" data-target="#deleteTest" aria-expanded="false" aria-controls="collapse">削除</button>
-            </div>
-          </div>
-        </li>
-        
-        <div class="collapse" id="deleteTest">
-          <div class="card card-body">
-            <div class="row">
-                <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
-                <button type="button" class="btn btn-danger col-sm-1">削除</button>
-              </div> 
-            </div>
-          </div>
-</div>   -->
-<!--デザインテスト用HTML ～完～-->
-        </ul>
-      </div>
-      
-    <!-- タスク追加モーダル -->
-    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">タスク登録</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <from>
-              <div class="form-group">
-                <label>タスク名</label>
-                <input type="text" name="task" class="form-control">
+        <li class="list-group-item category" id="add">
+          <from class="form-horizontal">
+            <div class="form-row align-items-bottom">
+              <div class="col-sm-3">
+                <div class="err">
+                  <label>タスク名</label>
+                  <span class="task-error"></span>
+                </div>
+                  <input type="text" name="task" class="form-control">
               </div>
-              <div class="form-group">
+              <div class="col-sm-2">
                 <label>期限</label>
-                <input type="date" name="deadline" class="form-control" class="date">
+                <input type="date" name="deadline" class="form-control date">
               </div>
-              <div class="form-group">
+              <div class="col-sm-1" align-items="frex-end">
+                <label></label>
+                <button type="button" class="btn btn-outline-info btn-sm reset" id="re-add">
+                  <b>締切ナシ</b>
+                </button>
+              </div>
+              <div class="col-sm-2">
                 <label>カテゴリ</label>
                 <select name="category" class="form-control">
                   <option value="1">生活</option>
@@ -142,16 +53,17 @@
                   <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
                 </select>
               </div>
-            </from>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-            <button type="button" class="btn btn-primary" id="create-task">追加</button>
-          </div>
-        </div>
-      </div>
+              <div class="btn-group col-sm-2 offset-sm-2" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-success btn-lg" id="create-task">
+                  <b>タスクを追加</b>
+                </button>
+              </div>
+            </div>
+          </from>
+        </li>
+      </ul>
     </div>
-    <!-- タスク追加モーダル ～完～-->
+      
     <!-- タスク更新モーダル -->
     <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -230,15 +142,36 @@
           "//" + window.location.host + "/api/tasks");
 
         const list = data.map((item) => {
-          const d = new Date(item.deadline);//timestanp->date
-          const year = d.getFullYear();
-          const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
-          const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
-          
+          let deadlineVal = null;
+          if(item.deadline == null){
+            deadlineVal = "（期限ナシ）";
+          }else{
+            const d = new Date(item.deadline);//timestanp->date
+            const year = d.getFullYear();
+            const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
+            const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
+            deadlineVal = `${year}年${month}月${date}日`;
+          }
           return `
           <li class="list-group-item category c${item.category_id}" name="id${item.id}">
             <div class="row align-items-center">
-              <span class="col-sm-8 task">${item.task_name}</span><span class="col-sm-2 deadline">${year}年${month}月${date}日</span>  
+              <div class="col-sm-3 task">${item.task_name}</div>
+              <div class="col-sm-2 deadline">${deadlineVal}</div>  
+              <div class="col-sm-2 offset-sm-1">
+                <select name="category" class="form-control update-category">
+                  <option value="1">生活</option>
+                  <option value="2">勉強</option>
+                  <option value="3">仕事</option>
+                  <option value="4">趣味</option>
+                  <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
+                </select></div>
+              <div class="col-sm-2 status">
+                <select name="update-status" class="form-control s${item.task_status}">
+                  <option value="1">完了</option>
+                  <option value="2">作業中</option>
+                  <option value="3">未実装</option>
+                  <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
+                </select></div>
               <div class="btn-group col-sm-2" role="group" aria-label="Basic example">
                 <button
                  type="button" 
@@ -267,6 +200,39 @@
           </div>`;
         })
         $('ul#list-group').append(list);
+
+        // 期限ナシの時に字を薄くする
+        $("div.deadline:contains('（期限ナシ）')").css('color', 'rgb(200, 200, 200)')
+        // 更新フォームのカテゴリーに初期値を装備
+        $(".c1 option[value=1]").prop('selected', true)
+        $(".c2 option[value=2]").prop('selected', true)
+        $(".c3 option[value=3]").prop('selected', true)
+        $(".c4 option[value=4]").prop('selected', true)
+        $(".s1 option[value=1]").prop('selected', true)
+        $(".s2 option[value=2]").prop('selected', true)
+        $(".s3 option[value=3]").prop('selected', true)
+        $(".s4 option[value=4]").prop('selected', true)
+      });
+
+      // 登録フォームエラー確認
+      $('#add input[name=task]').focusout(async function(){
+        if($(this).val() == ""){
+          $('#add .task-error').text("※入力必須").css('color', 'red');
+          $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
+        }else{
+          $('#add .task-error').text("");
+          $('#add input[name=task]').css('background-color', "rgb(255, 255, 255)")
+        }
+      });
+
+      // 期限リセット
+      $(document).on('click', '.reset', async function() {
+        const reset = $(this).attr('id')
+        if(reset=="re-add"){
+          $("#add input[name=deadline]").val("");
+        }else{
+          $("#update input[name=deadline]").val("");
+        }
       });
 
       // 登録メソッド
@@ -276,12 +242,17 @@
           deadline: $("#add input[name=deadline]").val(),
           category: $("#add select[name=category]").val(),
         };
-        const response = await httpPost(//httpPostはjavascript/index.jsに有り
+        if(data.taskName == ''){
+          $('#add .task-error').text("※入力必須").css('color', 'red');
+          $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
+        }else{
+          const response = await httpPost(//httpPostはjavascript/index.jsに有り
           "//" + window.location.host + "/api/tasks",
           data
-        );
+          );
 
-        window.location.reload();
+          window.location.reload();
+        }
       });
 
       // 更新メソッド
@@ -340,20 +311,6 @@
           $(this).text('削除');
         }
       });
-      //   // キャンセルボタン押したら削除に直す
-      //   console.log($(this).text())
-      //   if($(this).text() == "キャンセル"){
-      //     console.log("ok")
-      //     $(this).text('削除');
-      //   }
-      //   // 自分以外のコラプスを閉じる
-      //   $('multi-collapse').collapse('hide');
-      //   // 他のキャンセルボタンを削除ボタンに直す
-      //   $('.warning').text('削除');
-      //   // トグルを開く
-      //   $(`#delete${$(this).val()}`).collapse('show');
-      //   $(this).text("キャンセル");
-      // });
 
       // 削除
       $(document).on('click', '.delete', async function(){
