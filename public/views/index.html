@@ -65,7 +65,7 @@
     </div>
       
     <!-- タスク更新モーダル -->
-    <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -76,7 +76,7 @@
           </div>
           <div class="modal-body">
             <from name="update-id" value="">
-              <!-- <input name="id" type="hidden">  id格納のための見えないinputを与えてあげればAPI接続の時の書き方が統一できる-->
+              <input name="id" type="hidden">  id格納のための見えないinputを与えてあげればAPI接続の時の書き方が統一できる
               <div class="form-group">
                 <label>タスク名</label>
                 <input type="text" name="update-task" class="form-control">
@@ -92,7 +92,7 @@
                   <option value="2">勉強</option>
                   <option value="3">仕事</option>
                   <option value="4">趣味</option>
-                  <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
+                  <option>※自分でカテゴリ追加できたらいいな※</option>
                 </select>
               </div>
               <div class="form-group">
@@ -101,7 +101,7 @@
                   <option value="1">完了</option>
                   <option value="2">作業中</option>
                   <option value="3">未実装</option>
-                  <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
+                  <option>※自分でカテゴリ追加できたらいいな※</option>
                 </select>
               </div>
             </from>
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- タスク更新モーダル ～完～-->
 
     <!-- Optional JavaScript -->
@@ -143,6 +143,9 @@
 
         const list = data.map((item) => {
           let deadlineVal = null;
+          let remain = "";// 残り日数表示
+          let remainClass = "";// 残り日数に応じたクラス付与
+          
           if(item.deadline == null){
             deadlineVal = "（期限ナシ）";
           }else{
@@ -151,14 +154,38 @@
             const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
             const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
             deadlineVal = `${year}年${month}月${date}日`;
+
+            // 残り日数に応じてクラス付与
+            const today = new Date()
+            const oneDay = 86400000;
+            const remain_ms = d  - today + oneDay;//先にDate型のd-todayをしないとエラー(Date-Dateでようやく数字になっている)
+            //60*60*24=86400秒 単位をミリ秒(=1秒の1/1000)にするために1000倍する
+            // console.log(remain_ms + "^^")
+            // console.log(litem.status)
+            if(remain_ms <= 7*oneDay && item.task_status != 1){
+              remain = "あと"+ (Math.ceil(remain_ms / oneDay)) + "日";
+              if(0 < remain_ms && remain_ms <= 3*oneDay)
+              { remainClass = "near";}
+              else if(remain_ms < 0){
+                remainClass = "out";
+                remain = "期限切れ"
+              }
+              // console.log(d.getDate()-today.getDate())
+            }
           }
           return `
-          <li class="list-group-item category c${item.category_id}" name="id${item.id}">
+          <li
+           class="list-group-item category 
+           update-task
+           c${item.category_id} 
+           ${remainClass}" 
+           name="id${item.id}">
             <div class="row align-items-center">
               <div class="col-sm-3 task">${item.task_name}</div>
-              <div class="col-sm-2 deadline">${deadlineVal}</div>  
-              <div class="col-sm-2 offset-sm-1">
-                <select name="category" class="form-control update-category">
+              <div class="col-sm-2 deadline">${deadlineVal}</div>
+              <div class="col-sm-1 remain">${remain}</div>  
+              <div class="col-sm-2">
+                <select name="category" class="form-control custom-select update-category" data-initial="${item.category_id}">
                   <option value="1">生活</option>
                   <option value="2">勉強</option>
                   <option value="3">仕事</option>
@@ -166,7 +193,7 @@
                   <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
                 </select></div>
               <div class="col-sm-2 status">
-                <select name="update-status" class="form-control s${item.task_status}">
+                <select name="status" class="form-control s${item.task_status}" data-initial="${item.task_status}">
                   <option value="1">完了</option>
                   <option value="2">作業中</option>
                   <option value="3">未実装</option>
@@ -201,23 +228,28 @@
         })
         $('ul#list-group').append(list);
 
-        // 期限ナシの時に字を薄くする
-        $("div.deadline:contains('（期限ナシ）')").css('color', 'rgb(200, 200, 200)')
+        // タスク表示時の細かな処理
         // 更新フォームのカテゴリーに初期値を装備
-        $(".c1 option[value=1]").prop('selected', true)
+        $(".c1 option[value=1]").prop('selected', true)//.c1じゃなくてnameでいいかも
         $(".c2 option[value=2]").prop('selected', true)
         $(".c3 option[value=3]").prop('selected', true)
         $(".c4 option[value=4]").prop('selected', true)
-        $(".s1 option[value=1]").prop('selected', true)
+        $(".s1 option[value=1]").prop('selected', true)// .sじゃなくてname判断でいいかも
         $(".s2 option[value=2]").prop('selected', true)
         $(".s3 option[value=3]").prop('selected', true)
         $(".s4 option[value=4]").prop('selected', true)
+
+        // 期限ナシの時に字を薄くする
+        $("div.deadline:contains('（期限ナシ）')").css('color', 'rgb(200, 200, 200)')
       });
 
       // 登録フォームエラー確認
       $('#add input[name=task]').focusout(async function(){
         if($(this).val() == ""){
           $('#add .task-error').text("※入力必須").css('color', 'red');
+          $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
+        }else if($(this).val().length > 255){
+          $('#add .task-error').text("※255字以内で入力").css('color', 'red');
           $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
         }else{
           $('#add .task-error').text("");
@@ -256,6 +288,17 @@
       });
 
       // 更新メソッド
+      // 更新用selectの変更検知
+      $(document).on("change",".update-task select", async function() {
+        
+        const initial = $(this).data("initial");
+        const name = $(this).attr('name');
+        const val = $(this).val()
+
+        if(val == initial) $(this).css("background", "rgb(255, 255, 255");
+        else $(this).css("background", "rgb(230, 230, 255")
+      })
+      
       // DBから1件だけ情報取得
       $(document).on("click", ".update" , async function () {
         const update_id = $(this).val();
