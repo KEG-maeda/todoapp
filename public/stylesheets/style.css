@@ -6,6 +6,7 @@ body {
 
 a {
   color: #00b7ff;
+  border-bottom: 1px solid;
 }
 
 /* ↓↓　ここから自分で書いたやつ　↓↓ */
@@ -68,4 +69,13 @@ li.out {
 #re-add {
   position:absolute;
   bottom: 4px;
+}
+
+.fixed {
+  position: fixed;
+  background-color: white;
+  padding: 10px, 20px;
+  bottom: 30px;
+  right: 50px;
+  transform: scale(1.25, 1.25);
 }
