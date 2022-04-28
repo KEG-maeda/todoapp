@@ -40,7 +40,7 @@
               <div class="col-sm-1" align-items="frex-end">
                 <label></label>
                 <button type="button" class="btn btn-outline-info btn-sm reset" id="re-add">
-                  <b>締切ナシ</b>
+                  <b>期限ナシ</b>
                 </button>
               </div>
               <div class="col-sm-2">
@@ -63,58 +63,10 @@
         </li>
       </ul>
     </div>
-      
-    <!-- タスク更新モーダル -->
-    <!-- <div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">タスク更新</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <from name="update-id" value="">
-              <input name="id" type="hidden">  id格納のための見えないinputを与えてあげればAPI接続の時の書き方が統一できる
-              <div class="form-group">
-                <label>タスク名</label>
-                <input type="text" name="update-task" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>期限</label>
-                <input type="date" name="update-deadline" class="form-control date">
-              </div>
-              <div class="form-group">
-                <label>カテゴリ</label>
-                <select name="update-category" class="form-control">
-                  <option value="1">生活</option>
-                  <option value="2">勉強</option>
-                  <option value="3">仕事</option>
-                  <option value="4">趣味</option>
-                  <option>※自分でカテゴリ追加できたらいいな※</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>ステータス</label>
-                <select name="update-status" class="form-control">
-                  <option value="1">完了</option>
-                  <option value="2">作業中</option>
-                  <option value="3">未実装</option>
-                  <option>※自分でカテゴリ追加できたらいいな※</option>
-                </select>
-              </div>
-            </from>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">キャンセル</button>
-            <button type="button" class="btn btn-primary" id="update-task">更新</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- タスク更新モーダル ～完～-->
-
+    <div class="rounded fixed flex-column" style="flex-direction:column">
+      <button type="button" class="btn btn-primary rounded" id="all-update">更新</button>
+      <button type="button" class="btn btn-danger rounded" id="all-delete">削除</button>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -142,9 +94,11 @@
           "//" + window.location.host + "/api/tasks");
 
         const list = data.map((item) => {
+
+          //日数関連
           let deadlineVal = null;
-          let remain = "";// 残り日数表示
-          let remainClass = "";// 残り日数に応じたクラス付与
+          let deadlineValData = null;
+          let remains = ["", ""];
           
           if(item.deadline == null){
             deadlineVal = "（期限ナシ）";
@@ -154,93 +108,92 @@
             const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
             const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
             deadlineVal = `${year}年${month}月${date}日`;
+            deadlineValData = `${year}-${month}-${date}`;
 
             // 残り日数に応じてクラス付与
-            const today = new Date()
-            const oneDay = 86400000;
-            const remain_ms = d  - today + oneDay;//先にDate型のd-todayをしないとエラー(Date-Dateでようやく数字になっている)
-            //60*60*24=86400秒 単位をミリ秒(=1秒の1/1000)にするために1000倍する
-            // console.log(remain_ms + "^^")
-            // console.log(litem.status)
-            if(remain_ms <= 7*oneDay && item.task_status != 1){
-              remain = "あと"+ (Math.ceil(remain_ms / oneDay)) + "日";
-              if(0 < remain_ms && remain_ms <= 3*oneDay)
-              { remainClass = "near";}
-              else if(remain_ms < 0){
-                remainClass = "out";
-                remain = "期限切れ"
-              }
-              // console.log(d.getDate()-today.getDate())
-            }
+            remains = remain(d, item.task_status)
           }
+
+          // カテゴリー更新フォームのカテゴリーに初期値を装備
+          let selected1 = "";
+          let selected2 = "";
+          let selected3 = "";
+          let selected4 = "";
+
+          switch(item.category_id){
+            case 1: selected1 = "selected"; break;
+            case 2: selected2 = "selected"; break;
+            case 3: selected3 = "selected"; break;
+            case 4: selected4 = "selected"; break;
+          }
+
           return `
           <li
            class="list-group-item category 
            update-task
-           c${item.category_id} 
-           ${remainClass}" 
+           ${remains[1]}" 
            name="id${item.id}">
             <div class="row align-items-center">
-              <div class="col-sm-3 task">${item.task_name}</div>
-              <div class="col-sm-2 deadline">${deadlineVal}</div>
-              <div class="col-sm-1 remain">${remain}</div>  
+              <input name="update-id" value="${item.id}" style="display:none">
+              <div class="col-sm-3 toggle" name="task" data-id="${item.id}">
+                <a class="task task${item.id}">${item.task_name}</a>
+                <input 
+                  type="text" 
+                  name="update-task" 
+                  id="update-task${item.id}" 
+                  class="form-control" 
+                  style="display:none" 
+                  value="${item.task_name}">
+              </div>
+              <div class="col-sm-2 toggle" name="deadline" data-id="${item.id}">
+                <a class="deadline deadline${item.id}">${deadlineVal}</a>
+                <input type="date" 
+                  name="update-deadline" 
+                  id="update-deadline${item.id}" 
+                  class="form-control" 
+                  style="display:none" 
+                  value="${deadlineValData}">
+              </div>
+              <div class="col-sm-1 remain">${remains[0]}</div>  
               <div class="col-sm-2">
-                <select name="category" class="form-control custom-select update-category" data-initial="${item.category_id}">
-                  <option value="1">生活</option>
-                  <option value="2">勉強</option>
-                  <option value="3">仕事</option>
-                  <option value="4">趣味</option>
+                <select name="update-category" class="form-control custom-select" data-id="${item.id}" data-initial="${item.category_id}">
+                  <option ${selected1} value="1">生活</option>
+                  <option ${selected2} value="2">勉強</option>
+                  <option ${selected3} value="3">仕事</option>
+                  <option ${selected4} value="4">趣味</option>
                   <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
                 </select></div>
               <div class="col-sm-2 status">
-                <select name="status" class="form-control s${item.task_status}" data-initial="${item.task_status}">
+                <select name="update-status" class="form-control custom-select s${item.task_status}" data-id="${item.id}" data-initial="${item.task_status}">
                   <option value="1">完了</option>
                   <option value="2">作業中</option>
                   <option value="3">未実装</option>
                   <!-- <option>※自分でカテゴリ追加できたらいいな※</option> -->
                 </select></div>
-              <div class="btn-group col-sm-2" role="group" aria-label="Basic example">
-                <button
-                 type="button" 
-                 class="btn btn-primary update" 
-                 data-toggle="modal" 
-                 data-target="#update" 
-                 value=${item.id}>更新</button>
-                <button
-                 type="button" 
-                 class="btn btn-warning warning" 
-                 data-toggle="collapse" 
-                 data-target="#delete${item.id}" 
-                 aria-expanded="false" 
-                 aria-controls="multi-collapse" 
-                 value=${item.id}>削除</button>
-              </div>
+              <span class="col-sm-1 complete">〇</span>
+              <button
+                type="button" 
+                class="btn btn-warning select-delete col-sm-1"
+                value=${item.id}>削除</button>
             </div>
-          </li>
-          <div class="collapse multi-collapse back-red" data-parent="#list-group" id="delete${item.id}">
-            <div class="card card-body">
-              <div class="row align-items-center">
-                <div class="col-sm-10"><b>このタスクを削除しますか？</b></div>
-                <button type="button" class="btn btn-danger col-sm-1 delete" value="${item.id}">削除</button>
-              </div>
-            </div>
-          </div>`;
+          </li>`;
         })
         $('ul#list-group').append(list);
-
+        
         // タスク表示時の細かな処理
         // 更新フォームのカテゴリーに初期値を装備
-        $(".c1 option[value=1]").prop('selected', true)//.c1じゃなくてnameでいいかも
-        $(".c2 option[value=2]").prop('selected', true)
-        $(".c3 option[value=3]").prop('selected', true)
-        $(".c4 option[value=4]").prop('selected', true)
         $(".s1 option[value=1]").prop('selected', true)// .sじゃなくてname判断でいいかも
         $(".s2 option[value=2]").prop('selected', true)
         $(".s3 option[value=3]").prop('selected', true)
         $(".s4 option[value=4]").prop('selected', true)
 
+        // カテゴリーごとに色替え
+        changeColor();
+
         // 期限ナシの時に字を薄くする
-        $("div.deadline:contains('（期限ナシ）')").css('color', 'rgb(200, 200, 200)')
+        noDeadline();
+
+        showComplete();
       });
 
       // 登録フォームエラー確認
@@ -262,7 +215,7 @@
         const reset = $(this).attr('id')
         if(reset=="re-add"){
           $("#add input[name=deadline]").val("");
-        }else{
+        }else{//ここいらない。リセットボタンは1つしかないし
           $("#update input[name=deadline]").val("");
         }
       });
@@ -274,8 +227,12 @@
           deadline: $("#add input[name=deadline]").val(),
           category: $("#add select[name=category]").val(),
         };
+
         if(data.taskName == ''){
           $('#add .task-error').text("※入力必須").css('color', 'red');
+          $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
+        }else if($(this).val().length > 255){
+          $('#add .task-error').text("※255字以内で入力").css('color', 'red');
           $('#add input[name=task]').css('background-color', "rgb(255, 230, 230)")
         }else{
           const response = await httpPost(//httpPostはjavascript/index.jsに有り
@@ -288,83 +245,196 @@
       });
 
       // 更新メソッド
+      // クリックしたらinputに
+      $(document).on("click",".update-task div.toggle", async function() {
+        const id = $(this).data("id");
+        const name = $(this).attr("name");
+        
+        $(`#update-${name}${id}`).show();
+        $(`#update-${name}${id}`).focus();
+        $(`a.${name}${id}`).hide();
+      })
+      // 逃げたらaに切り替え
+      $(document).on("focusout",".update-task div.toggle", async function() {
+        const id = $(this).data("id");
+        const name = $(this).attr("name");
+        
+        $(`a.${name}${id}`).show();
+        $(`#update-${name}${id}`).hide();
+      })
+      // aのtextは常にinputを参照する
+      $(document).on("change",".update-task div.toggle", async function() {
+        const id = $(this).data("id");
+        const name = $(this).attr("name");
+        let text = $(`#update-${name}${id}`).val();
+        const ymd = text.split("-")
+
+        // deadlineの時はyyyy-mm-ddから年月日に変えてから入れる
+        if(name == "deadline"){
+          if(ymd == "") text = "（期限ナシ）"
+          else text = `${ymd[0]}年${ymd[1]}月${ymd[2]}日`;
+
+          // 締切変更時に警告と残り日数を更新
+          const d = new Date(`${ymd[0]}-${ymd[1]}-${ymd[2]}`);
+          const status = $(`li[name=id${id}] select[name=update-status]`).val();
+          // console.log("status   " + status)
+          
+          // クラス取得してnearやoutがないかを確認
+          changeRemain(id, remain(d, status))
+        }
+        // aのtextにinputのvalueを代入
+        $(`a.${name}${id}`).text(text); 
+        noDeadline()
+      })
+
       // 更新用selectの変更検知
       $(document).on("change",".update-task select", async function() {
-        
+
+        const id = $(this).data("id");
+        const name = $(this).attr("name")
         const initial = $(this).data("initial");
-        const name = $(this).attr('name');
         const val = $(this).val()
 
         if(val == initial) $(this).css("background", "rgb(255, 255, 255");
-        else $(this).css("background", "rgb(230, 230, 255")
+        else $(this).css("background", "rgb(200, 230, 255")
+        
+        if(name=="update-status"){
+          const d =  new Date($(`#update-deadline${id}`).val())
+          if(d != "Invalid Date") changeRemain(id, remain(d, val))//期限ナシだとdはInvalid Dateになるし期限ナシならステータス気にしなくていい
+        }
+
+        changeColor();
+
+        if(name == "update-status"){
+          showComplete();
+        }
       })
-      
-      // DBから1件だけ情報取得
-      $(document).on("click", ".update" , async function () {
-        const update_id = $(this).val();
 
-        const response = await httpGet(
-          "//" + window.location.host + `/api/tasks/${update_id}`
-          );
-        // response.forEach(item => {
-        // if(item.id == update_id){ 
+      // 一括更新
+      $(document).on("click", '#all-update', async function () {
+        
+        $("input[name=update-id]").each(async function(i, o){
 
-          const d = new Date(response[0].deadline);//timestanp->date
-          const year = d.getFullYear();
-          const month = ("0" + (d.getMonth() + 1)).slice(-2);//getMonthは1~12を0~11で返す。1を足して一桁に備えて2桁目に0を足している
-          const date = ("0" + d.getDate()).slice(-2);//Dayだと曜日を数字で返す。なおDateは1~31で返してくれる。Monthだけなんで？？？？
-          const deadlineVal = `${year}-${month}-${date}`;
-          
-          $("#update [name=update-id]").val(response[0].id);//パラメータを使えば、responseには常に押されたタスクの情報のみ入る
-          $("#update input[name=update-task]").val(response[0].task_name);//ただし取り出すには配列数の指定が必要
-          $("#update input[name=update-deadline]").val(deadlineVal);//配列数がないと、どの配列のを取り出すのかが不明確だから？本来配列は複数あるのを想定してるし
-          $("#update select[name=update-category]").val(response[0].category_id);
-          $("#update select[name=update-status]").val(response[0].task_status);
-        // }
-      // })
-      });
+          let ids = $(o).val()
 
-        // DBを更新
-      $('#update-task').on("click", async function () {
-        const data = {
-          id:       $("#update [name=update-id]").val(),
-          taskName: $("#update input[name=update-task]").val(),
-          deadline: $("#update input[name=update-deadline]").val(),
-          category: $("#update select[name=update-category]").val(),//
-          status:   $("#update select[name=update-status]").val()
-        };
+            //li name=id@に対応するタスク名などを一個ずつ持ってきてアップデートする
+          const data = {
+            id:       $(`.update-task[name=id${ids}] input[name=update-id]`).val(),
+            taskName: $(`.update-task[name=id${ids}] input[name=update-task]`).val(),
+            deadline: $(`.update-task[name=id${ids}] input[name=update-deadline]`).val(),
+            category: $(`.update-task[name=id${ids}] select[name=update-category]`).val(),//
+            status:   $(`.update-task[name=id${ids}] select[name=update-status]`).val()
+          };
 
-        const response = await httpUpdate(//httpPostはjavascript/index.jsに有り
-          "//" + window.location.host + `/api/tasks/${data.id}`,
+          const response = await httpUpdate(//httpPostはjavascript/index.jsに有り
+          "//" + window.location.host + `/api/tasks/${ids}`,
           data
-        );
-
+          )
+        });
+        
         window.location.reload();
       });
 
       // 削除メソッド
-      $(document).on('click', ".warning", async function() {
+      $(document).on('click', ".select-delete", async function() {
+
         if($(this).text() == "削除"){
-          $('multi-collapse').collapse('hide');// 自分以外のコラプスを閉じる
-          $('.warning').text('削除');// 他のキャンセルボタンを削除ボタンに直す
-          $(`#delete${$(this).val()}`).collapse('show');// コラプスを開く
           $(this).text("キャンセル");
+          $(this).css("font-size", "0.7rem")
+          $(this).parents("li").addClass("back-red");
+          $(this).removeClass("btn-warning")
+          $(this).addClass("btn-light")
 
         } else if($(this).text() == "キャンセル"){// キャンセルボタン押したら削除に直す
           $(this).text('削除');
+          $(this).css("font-size", "1rem")
+          $(this).parents("li").removeClass("back-red");
+          $(this).removeClass("btn-light")
+          $(this).addClass("btn-warning")
         }
       });
 
-      // 削除
-      $(document).on('click', '.delete', async function(){
-        const id = $(this).val();
+      // 一括削除
+      $("#all-delete").on('click', function(){
 
-        const response = await httpDelete(//httpPostはjavascript/index.jsに有り
-          "//" + window.location.host + `/api/tasks/${id}`
-        );
-
+        $("li button.btn-light").each(async function (i, btn){
+          let del_id = $(btn).val()
+          
+          const response = await httpDelete(//httpPostはjavascript/index.jsに有り
+          "//" + window.location.host + `/api/tasks/${del_id}`
+          );
+        })
+          
         window.location.reload();
       });
+
+      // 関数
+      // 期限ナシ時に表示を薄くする
+      function noDeadline(){
+        $("a.deadline:contains('（期限ナシ）')").css('color', 'rgb(200, 200, 200)')
+        $("a.deadline:contains('年')").css('color', 'black')
+      }
+
+      // 残り日数関数 0に期限、1にクラス
+      function remain (deadline, status){//remainとchangeRemainは統一化できるはず
+
+        let remains = ["", ""]
+        const today = new Date()
+        const oneDay = 86400000;
+        const remain_ms = deadline  - today + oneDay;
+
+        if(remain_ms <= 7*oneDay && status != 1){
+          remains[0] = "あと"+ (Math.ceil(remain_ms / oneDay)) + "日";
+          
+          if(0 < remain_ms && remain_ms <= 3*oneDay){
+            remains[1] = "near";
+
+          }else if(remain_ms < 0){
+            remains[1] = "out";
+            remains[0] = "期限切れ"
+          }
+        }
+
+        return remains;
+      }
+
+      // クラス取得してnearやoutがないかを確認
+      function changeRemain (id, remains){
+
+        const changeT = $(`li[name=id${id}]`).attr("class").split(' ');
+        changeT.map((item) => {
+
+          if(item == "near" || item == "out"){
+            $(`li[name=id${id}]`).removeClass("near")
+            $(`li[name=id${id}]`).removeClass("out")
+          } 
+        })
+        // console.log(remain[0])
+        // クラスと残り日数を更新
+        $(`li[name=id${id}] .remain`).text(remains[0])
+        $(`li[name=id${id}]`).addClass(remains[1])
+      }
+
+      function changeColor () {
+        $("li select[name=update-category]").each(function (i, id){
+          let category = $(id).val()
+          
+          switch(category){
+            case "1": $(this).parents("li").css("border-left-color", "green"); break;
+            case "2": $(this).parents("li").css("border-left-color", "orange"); break;
+            case "3": $(this).parents("li").css("border-left-color", "blue"); break;
+            case "4": $(this).parents("li").css("border-left-color", "pink"); break;
+            // default: console.log(category + "NG")
+          }
+        })
+      }
+
+      function showComplete(){
+        $("li select[name=update-status]").each(function (i, id){
+          if($(id).val()== 1) $(this).parent().next("span").text("〇")
+          else                $(this).parent().next("span").text("")
+        })
+      }
     </script>
   </body>
 </html>

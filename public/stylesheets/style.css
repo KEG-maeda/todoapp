@@ -6,6 +6,7 @@ body {
 
 a {
   color: #00b7ff;
+  border-bottom: 1px solid;
 }
 
 /* ↓↓　ここから自分で書いたやつ　↓↓ */
@@ -27,23 +28,7 @@ li {
 .category#add {
   border-color: #28a745
 }
-.c1 {
-  border-left-color: green;
-  /* 生活 */
-}
 
-.c2 {
-  border-left-color: orange;
-  /* 勉強 */
-}
-.c3 {
-  border-left-color: blue;
-  /* 仕事 */
-}
-.c4 {
-  border-left-color: pink;
-  /* 趣味 */
-}
 /* カテゴリーごとに色分け　～完～ */
 /* 期限間近 */
 li.out {
@@ -61,11 +46,25 @@ li.out {
 }
 /* 期限間近　～完～ */
 
+.complete{
+  font-weight: bold;
+  color:#28a745
+}
 .back-red {
-  background-color: rgb(233, 150, 150);
+  background-color: rgb(255, 172, 172);
 }
 
 #re-add {
   position:absolute;
   bottom: 4px;
+}
+
+.fixed {
+  position: fixed;
+  flex-direction:column;
+  background-color: white;
+  padding: 10px, 20px;
+  bottom: 30px;
+  right: 50px;
+  transform: scale(1.25, 1.25);
 }
